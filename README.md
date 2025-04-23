@@ -53,10 +53,10 @@ The CD pipeline runs on every push to the `main` branch and performs these steps
 1. **Staging Deployment**: The `deploy.sh` script copies the JAR file to the staging directory and starts the application on port 8081.
 2. **Health Checks**: The `health_check.sh` script verifies that both staging and production environments are responding correctly.
 3. **Production Deployment**: If staging is healthy, the `promote_to_production.sh` script:
-    - Backs up the current production version
-    - Stops the production instance
-    - Copies the staging version to production
-    - Starts the production instance on port 8080
+   - Backs up the current production version
+   - Stops the production instance
+   - Copies the staging version to production
+   - Starts the production instance on port 8080
 4. **Rollback**: If needed, the `rollback.sh` script restores the previous production version.
 
 ## Infrastructure as Code

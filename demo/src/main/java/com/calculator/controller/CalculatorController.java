@@ -1,15 +1,24 @@
+package com.example.calculator.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
 public class CalculatorController {
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String showCalculatorForm(Model model) {
         model.addAttribute("result", "");
         return "calculator";
     }
 
     @PostMapping("/calculate")
     public String calculate(
-            @RequestParam("num1") double num1,
-            @RequestParam("num2") double num2,
+            @RequestParam("firstNumber") double firstNumber,
+            @RequestParam("secondNumber") double secondNumber,
             @RequestParam("operation") String operation,
             Model model) {
 
@@ -17,17 +26,17 @@ public class CalculatorController {
 
         switch (operation) {
             case "add":
-                result = num1 + num2;
+                result = firstNumber + secondNumber;
                 break;
             case "subtract":
-                result = num1 - num2;
+                result = firstNumber - secondNumber;
                 break;
             case "multiply":
-                result = num1 * num2;
+                result = firstNumber * secondNumber;
                 break;
             case "divide":
-                if (num2 != 0) {
-                    result = num1 / num2;
+                if (secondNumber != 0) {
+                    result = firstNumber / secondNumber;
                 } else {
                     model.addAttribute("error", "Cannot divide by zero");
                     model.addAttribute("result", "Error");
@@ -37,6 +46,10 @@ public class CalculatorController {
         }
 
         model.addAttribute("result", result);
+        model.addAttribute("firstNumber", firstNumber);
+        model.addAttribute("secondNumber", secondNumber);
+        model.addAttribute("operation", operation);
+
         return "calculator";
     }
 }

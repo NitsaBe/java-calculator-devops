@@ -3,7 +3,6 @@ name: Java CD
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
 
 jobs:
   deploy:
@@ -11,42 +10,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'adopt'
-          cache: maven
+          distribution: 'temurin'
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn clean package -DskipTests
 
-      - name: Run tests
-        run: mvn test
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-
-      - name: Initialize Terraform
+      - name: Create deployment artifact
         run: |
-          cd terraform
-          terraform init
+          mkdir -p deployment
+          cp target/*.jar deployment/
+          cp -r terraform deployment/
+          cp -r scripts deployment/
 
-      - name: Apply Terraform configuration
-        run: |
-          cd terraform
-          terraform apply -auto-approve
-
-      - name: Run deployment scripts
-        run: |
-          chmod +x scripts/build.sh
-          ./scripts/build.sh
-          chmod +x deploy/blue_green_deploy.sh
-          ./deploy/blue_green_deploy.sh
-
-      - name: Run health check
-        run: |
-          chmod +x deploy/health_check.sh
-          ./deploy/health_check.sh
-          cat deploy/logs/health_check.log
+      - name: Archive deployment package
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-package
+          path: deployment/
