@@ -1,8 +1,10 @@
+name: Java CI with Maven
+
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ master, dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -15,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
       - name: Build with Maven
@@ -24,13 +26,14 @@ jobs:
       - name: Run tests
         run: mvn test
 
-      - name: Upload test reports
-        if: always()
+      - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: test-reports
-          path: target/surefire-reports/
+          name: calculator-app
+          path: target/*.jar
 
-      - name: Lint check
-        run: |
-          mvn checkstyle:check
+      - name: Archive test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports
