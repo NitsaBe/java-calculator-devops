@@ -2,12 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Simple Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+        }
+        .calculator {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .form-group {
             margin-bottom: 15px;
@@ -26,50 +34,54 @@
             color: white;
             padding: 10px 15px;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
         }
         .result {
             margin-top: 20px;
             padding: 10px;
-            background-color: #f2f2f2;
-            border-radius: 4px;
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
         }
         .error {
             color: red;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 <h1>Simple Calculator</h1>
 
-<form action="/calculate" method="post">
-    <div class="form-group">
-        <label for="num1">First Number:</label>
-        <input type="number" id="num1" name="num1" step="any" required>
+<div class="calculator">
+    <form method="post" action="/calculate">
+        <div class="form-group">
+            <label for="firstNumber">First Number:</label>
+            <input type="number" id="firstNumber" name="firstNumber" step="any" required th:value="${firstNumber}">
+        </div>
+
+        <div class="form-group">
+            <label for="operation">Operation:</label>
+            <select id="operation" name="operation">
+                <option value="add" th:selected="${operation == 'add'}">Addition (+)</option>
+                <option value="subtract" th:selected="${operation == 'subtract'}">Subtraction (-)</option>
+                <option value="multiply" th:selected="${operation == 'multiply'}">Multiplication (*)</option>
+                <option value="divide" th:selected="${operation == 'divide'}">Division (/)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="secondNumber">Second Number:</label>
+            <input type="number" id="secondNumber" name="secondNumber" step="any" required th:value="${secondNumber}">
+        </div>
+
+        <button type="submit">Calculate</button>
+    </form>
+
+    <div class="result" th:if="${result != null && result != ''}">
+        <h3>Result:</h3>
+        <p th:if="${error}" class="error" th:text="${error}"></p>
+        <p th:unless="${error}" th:text="${result}"></p>
     </div>
-
-    <div class="form-group">
-        <label for="operation">Operation:</label>
-        <select id="operation" name="operation" required>
-            <option value="add">Addition (+)</option>
-            <option value="subtract">Subtraction (-)</option>
-            <option value="multiply">Multiplication (*)</option>
-            <option value="divide">Division (/)</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="num2">Second Number:</label>
-        <input type="number" id="num2" name="num2" step="any" required>
-    </div>
-
-    <button type="submit">Calculate</button>
-</form>
-
-<div class="result" th:if="${result != ''}">
-    <h2>Result:</h2>
-    <p th:text="${result}"></p>
-    <p class="error" th:if="${error}" th:text="${error}"></p>
 </div>
 </body>
 </html>
