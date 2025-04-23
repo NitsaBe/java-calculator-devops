@@ -2,10 +2,15 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
-JAR_FILE="$PROJECT_ROOT/target/calculator-0.0.1-SNAPSHOT.jar"
+JAR_FILE="$PROJECT_ROOT/demo/target/calculator-0.0.1-SNAPSHOT.jar"
 STAGING_DIR="$PROJECT_ROOT/terraform/staging"
 
 echo "Deploying application to staging..."
+
+if [ ! -f "$JAR_FILE" ]; then
+  echo "JAR file not found at $JAR_FILE. Exiting."
+  exit 1
+fi
 
 cp "$JAR_FILE" "$STAGING_DIR/"
 
@@ -20,9 +25,13 @@ cat > "$STAGING_DIR/stop.sh" << 'EOF'
 #!/bin/bash
 if [ -f app.pid ]; then
   PID=$(cat app.pid)
-  kill $PID
-  rm app.pid
-  echo "Application stopped."
+  if ps -p $PID > /dev/null; then
+    kill $PID
+    rm app.pid
+    echo "Application stopped."
+  else
+    echo "No running process found with PID: $PID"
+  fi
 else
   echo "No application running."
 fi
