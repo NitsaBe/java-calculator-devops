@@ -27,38 +27,47 @@ The calculator web application provides:
 
 ## CI/CD Pipeline
 
-### Continuous Integration
-- Automatic testing on push to dev branch
-- Automatic testing on pull requests to main branch
-- Tests include unit tests for controller and service classes
+## CI/CD Pipeline Explanation
 
-### Continuous Deployment
-- Automatic build and deployment preparation on push to main branch
-- Local deployment follows a blue-green deployment strategy
-- Deployment scripts handle:
-   - Staging deployment
-   - Production promotion
-   - Rollback capability
-   - Health monitoring
+### Continuous Integration (CI)
 
-### Infrastructure as Code
+The CI pipeline runs on every push to the `dev` branch and on pull requests to the `main` branch. It performs the following steps:
+
+1. Checkout the code repository
+2. Set up Java 21 environment
+3. Build the application using Maven
+4. Run unit tests
+
+### Continuous Deployment (CD)
+
+The CD pipeline runs on every push to the `main` branch and performs these steps:
+
+1. Checkout the code repository
+2. Set up Java 21 environment
+3. Build the application using Maven (skipping tests)
+4. Create a deployment package with JAR file and scripts
+5. Archive the deployment package as an artifact
+
+### Local Deployment Process
+
+1. **Staging Deployment**: The `deploy.sh` script copies the JAR file to the staging directory and starts the application on port 8081.
+2. **Health Checks**: The `health_check.sh` script verifies that both staging and production environments are responding correctly.
+3. **Production Deployment**: If staging is healthy, the `promote_to_production.sh` script:
+   - Backs up the current production version
+   - Stops the production instance
+   - Copies the staging version to production
+   - Starts the production instance on port 8080
+4. **Rollback**: If needed, the `rollback.sh` script restores the previous production version.
+
+## Infrastructure as Code
+
 The project uses Terraform to manage the local deployment environment:
-- Creation of staging and production directories
-- Environment variable management
-- Application configuration
 
-## Deployment Workflow
+- Creates and manages directories for staging, production, backup, and logs
+- Ensures consistent environment structure
+- Provides clear output of directory locations
 
-1. Changes are pushed to dev branch
-2. CI pipeline validates changes
-3. Pull request is created to main branch
-4. After PR approval and merge, CD pipeline builds the application
-5. Manual deployment to staging using `deploy.sh`
-6. Health check verifies staging deployment
-7. Manual promotion to production using `promote_to_production.sh`
-8. Health check verifies production deployment
-9. If health check fails, automatic rollback using `rollback.sh`
-
+## Setup and Deployment
 ## Local Setup Instructions
 
 1. Clone the repository
@@ -79,12 +88,35 @@ terraform init
 terraform apply
 ```
 
-4. Deploy the application
-```bash
-./scripts/automated_deployment.sh
-```
 
-5. Access the application
+2. Initialize Terraform:
+```bash
+   cd terraform
+   terraform init
+   terraform apply
+   ```
+
+3. Build the application:
+```bash
+   mvn clean package
+   ```
+
+4. Deploy to staging:
+```bash
+   ./scripts/deploy.sh
+   ```
+
+5. Check application health:
+```bash
+   ./scripts/health_check.sh
+   ```
+
+6. Promote to production:
+```bash
+   ./scripts/promote_to_production.sh
+   ```
+
+### Accessing the Application
+
 - Staging: http://localhost:8081
 - Production: http://localhost:8080
-
