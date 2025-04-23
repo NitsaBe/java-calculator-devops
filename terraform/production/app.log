@@ -1,0 +1,22 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2025-04-23T22:16:20.664+04:00  INFO 24264 --- [           main] c.e.calculator.CalculatorApplication     : Starting CalculatorApplication v0.0.1-SNAPSHOT using Java 21.0.6 with PID 24264 (C:\Users\User\Desktop\JavaProch\demo (1)\terraform\production\calculator-0.0.1-SNAPSHOT.jar started by User in C:\Users\User\Desktop\JavaProch\demo (1)\terraform\production)
+2025-04-23T22:16:20.666+04:00  INFO 24264 --- [           main] c.e.calculator.CalculatorApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-04-23T22:16:21.550+04:00  INFO 24264 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-23T22:16:21.562+04:00  INFO 24264 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-23T22:16:21.562+04:00  INFO 24264 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-23T22:16:21.593+04:00  INFO 24264 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-23T22:16:21.594+04:00  INFO 24264 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 879 ms
+2025-04-23T22:16:21.987+04:00  INFO 24264 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-23T22:16:22.001+04:00  INFO 24264 --- [           main] c.e.calculator.CalculatorApplication     : Started CalculatorApplication in 1.803 seconds (process running for 2.268)
+2025-04-23T22:16:22.200+04:00  INFO 24264 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-23T22:16:22.200+04:00  INFO 24264 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-23T22:16:22.201+04:00  INFO 24264 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

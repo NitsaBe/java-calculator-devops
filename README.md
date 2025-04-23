@@ -1,129 +1,90 @@
-# Calculator - DevOps Pipeline Project
+# Calculator DevOps Pipeline Project
 
-This project implements a simple calculator web application using Spring Boot and Java 21, along with a complete DevOps pipeline implemented for local deployment.
+A simple calculator web application with a complete DevOps pipeline implemented using Java, Spring Boot, Terraform, and GitHub Actions.
 
-## Project Overview
+## Project Description
 
-This calculator application provides basic arithmetic operations (addition, subtraction, multiplication, division) through a web interface. The project demonstrates DevOps principles including:
-
-- Version control with Git
-- CI/CD pipeline with GitHub Actions
-- Infrastructure as Code using Terraform
-- Automated testing
-- Continuous deployment with blue-green deployment strategy
-- Health monitoring
+This project demonstrates a simplified DevOps pipeline for a Java Spring Boot calculator application. The application allows users to perform basic arithmetic operations through a web interface.
 
 ## Tools and Technologies Used
 
-- Java 21
-- Spring Boot 3.4.4
-- Maven
-- JUnit 5
-- Git/GitHub
-- GitHub Actions
-- Terraform
-- Bash scripting
+- **Java 21** - Programming language
+- **Spring Boot 3.4.4** - Web application framework
+- **Maven** - Build tool
+- **Git & GitHub** - Version control and repository hosting
+- **GitHub Actions** - CI/CD pipeline
+- **Terraform** - Infrastructure as Code
+- **Bash Scripts** - Deployment automation
 
-## Project Structure
+## Application Features
 
+The calculator web application provides:
+- Addition
+- Subtraction
+- Multiplication
+- Division
+- Input validation and error handling
+
+## CI/CD Pipeline
+
+### Continuous Integration
+- Automatic testing on push to dev branch
+- Automatic testing on pull requests to main branch
+- Tests include unit tests for controller and service classes
+
+### Continuous Deployment
+- Automatic build and deployment preparation on push to main branch
+- Local deployment follows a blue-green deployment strategy
+- Deployment scripts handle:
+   - Staging deployment
+   - Production promotion
+   - Rollback capability
+   - Health monitoring
+
+### Infrastructure as Code
+The project uses Terraform to manage the local deployment environment:
+- Creation of staging and production directories
+- Environment variable management
+- Application configuration
+
+## Deployment Workflow
+
+1. Changes are pushed to dev branch
+2. CI pipeline validates changes
+3. Pull request is created to main branch
+4. After PR approval and merge, CD pipeline builds the application
+5. Manual deployment to staging using `deploy.sh`
+6. Health check verifies staging deployment
+7. Manual promotion to production using `promote_to_production.sh`
+8. Health check verifies production deployment
+9. If health check fails, automatic rollback using `rollback.sh`
+
+## Local Setup Instructions
+
+1. Clone the repository
+```bash
+git clone https://github.com/NitsaBe/java-calculator-devops.git
+cd calculator-devops
 ```
-calculator/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/example/calculator/
-│   │   │       ├── controller/
-│   │   │       │   └── CalculatorController.java
-│   │   │       ├── service/
-│   │   │       │   └── CalculatorService.java
-│   │   │       └── CalculatorApplication.java
-│   │   └── resources/
-│   │       ├── templates/
-│   │       │   └── calculator.html
-│   │       └── application.properties
-│   └── test/
-│       └── java/
-│           └── com/example/calculator/
-│               ├── controller/
-│               │   └── CalculatorControllerTest.java
-│               └── service/
-│                   └── CalculatorServiceTest.java
-├── terraform/
-│   ├── main.tf
-│   └── scripts/
-│       ├── automated_deployment.sh
-│       ├── deploy.sh
-│       ├── promote_to_production.sh
-│       ├── rollback.sh
-│       └── health_check.sh
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── .gitignore
-├── pom.xml
-└── README.md
+
+2. Build the application
+```bash
+mvn clean package
 ```
 
-## CI/CD Pipeline Explanation
+3. Set up infrastructure with Terraform
+```bash
+cd terraform
+terraform init
+terraform apply
+```
 
-The CI/CD pipeline for this project consists of the following stages:
+4. Deploy the application
+```bash
+./scripts/automated_deployment.sh
+```
 
-1. **Continuous Integration**:
-   - Triggered by pushes to master/dev branches or PRs to master
-   - Builds the application
-   - Runs unit tests
-   - Archives build artifacts and test results
-
-2. **Infrastructure Provisioning**:
-   - Terraform creates local deployment directories
-   - Generates deployment, promotion, rollback, and health check scripts
-
-3. **Continuous Deployment**:
-   - Blue-Green deployment strategy
-   - Deploys to staging environment first
-   - Runs validation tests
-   - Promotes to production if validation passes
-   - Includes automated rollback mechanism if health checks fail
-
-## Getting Started
-
-### Prerequisites
-- Java 21 JDK
-- Maven
-- Git
-- Terraform
-- IntelliJ IDEA
-
-### Building and Running Locally
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/calculator.git
-   cd calculator
-   ```
-
-2. Build with Maven:
-   ```
-   mvn clean package
-   ```
-
-3. Run the application:
-   ```
-   java -jar target/calculator-0.0.1-SNAPSHOT.jar
-   ```
-
-4. Access the calculator at: http://localhost:8080
-
-### Executing the Deployment Pipeline
-
-1. Make sure the application is built:
-   ```
-   mvn clean package
-   ```
-
-2. Run the automated deployment:
-   ```
-   cd terraform/scripts
-   ./automated_deployment.sh
-   ```
+5. Access the application
+- Staging: http://localhost:8081
+- Production: http://localhost:8080
 
