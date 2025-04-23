@@ -8,7 +8,7 @@ resource "local_file" "staging_folder" {
   content  = "This folder is managed by Terraform"
 
   provisioner "local-exec" {
-    command = "mkdir -p ${path.module}/staging"
+    command = "powershell -Command \"New-Item -ItemType Directory -Force -Path ./staging\""
   }
 }
 
@@ -18,7 +18,7 @@ resource "local_file" "production_folder" {
   content  = "This folder is managed by Terraform"
 
   provisioner "local-exec" {
-    command = "mkdir -p ${path.module}/production"
+    command = "powershell -Command \"New-Item -ItemType Directory -Force -Path ./staging\""
   }
 }
 
@@ -28,6 +28,6 @@ resource "local_file" "logs_folder" {
   content  = "This folder is managed by Terraform"
 
   provisioner "local-exec" {
-    command = "mkdir -p ${path.module}/logs"
+    command = "powershell -Command \"New-Item -ItemType Directory -Force -Path ./staging\""
   }
 }
